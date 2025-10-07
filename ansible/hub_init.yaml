@@ -58,12 +58,6 @@
     dest: /opt/altair/slchub/etc/config.d/auth_zzz.yaml
     mode: 0644
 
-- name: Create database configuration
-  ansible.builtin.template:
-    src: templates/database_custom.yaml.j2
-    dest: /opt/altair/slchub/etc/config.d/database_custom.yaml
-    mode: 0644
-
 - name: Create s3 configuration
   ansible.builtin.template:
     src: templates/s3_custom.yaml.j2
@@ -95,12 +89,18 @@
   ansible.builtin.file:
     src: /opt/altair/slchub/bin/hubctl
     dest: /usr/local/bin/hubctl
-    owner: root
-    group: root
+    owner: slchub
+    group: slchub
     state: link
 
-- name: Run dbmigrate
-  ansible.builtin.command: /usr/local/bin/hubctl dbmigrate
+- name: Ensure hubctl is executable
+  ansible.builtin.file:
+    path: /opt/altair/slchub/bin/hubctl
+    mode: "0755"
+    owner: slchub
+    group: slchub
+    state: file
+  become: true
 
 - name: Run bootstrap
   ansible.builtin.command: "/usr/local/bin/hubctl bootstrap {{ bootstrap_params }}"

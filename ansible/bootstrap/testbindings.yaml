@@ -1,4 +1,4 @@
 roleBindings:
-  - role: InvokeAnyDeploymentUser
+  - role: AnyDeployedProgramConsumer
     groups:
     - InvocationPortalUsers

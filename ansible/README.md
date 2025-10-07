@@ -1,17 +1,17 @@
 # Ansible
-This folder contains ansible to provision a hub and any number of workers.
+This folder contains Ansible playbooks to provision a hub and any number of workers.
 
-You cannot run the worker(s) on the hub node.
+Key points
+- Workers must not be run on the hub node.
+- Provide a `hosts` file (inventory) and update variables in `vars/` as needed.
+- Ensure you have SSH access to target hosts (pre-shared private key or another mechanism).
 
-Right now this expects an external s3 store and postgresql database.
-
-To use it provide a hosts file and change the settings in the files in vars.
-
-You should have a pre-shared private key to log in to the hosts you're expecting to access or provide access mechanisms through the hosts file.
-
-Licenses: place a hub.txt and a setinit.wps in the license/ folder
-
-Then run all.sh or ansible-playbook main.yaml.
+Flow
+1. Prepare infrastructure (for example with `terraform/aws_route53`).
+2. After Terraform completes copy the generated `hosts` file into this directory.
+3. Review and set values in `vars/*` (for example `vars/common.yaml`, `vars/ldap.yaml`, `vars/license.yaml`).
+4. Update `vars/license.yaml` with a valid `auth_code` before running: generate it at https://admin.altairone.com/updateprofile in the "Authorized Machines" tab and place the code as `license.auth_code`.
+5. Run `./all.sh` to provision.
 
 ## Hosts example (AWS)
 
@@ -45,7 +45,6 @@ s3_region = eu-west-2
 cloud_provider = azure
 ingress_url = https://hub.test.wpscloud.co.uk
 shared_store_endpoint = hub-test-store.file.core.windows.net:/hub-test-store/hub-test-shared-store
-db_host = hub-test-db.postgres.database.azure.com
 db_name = testhub
 db_user = hubdb
 db_password = sh2djg7ad89hjklasdfgbhjkl
@@ -72,49 +71,6 @@ vars/ldap.yaml should be setup if you'd like ldap integration.
 vars/license.yaml you must set the license type either a1 (for altair units) or
 alm (for license manager). See vars/license.yaml for more details.
 
-# Local Postgres Install
-
-This is optional. This currently only supports install using local .RPM files. To use this define your database variables in /vars/common.yaml:
-
-db_host, db_name, db_user, db_password, db_ssl_mode
-
-Define a host for postgresql in your hosts file:
-
-[postgresql]
-10.100.10.10 ansible_user=ansible_user private_name=host-postgres
-
-This was created to work with SQL Server 13 but may work with other versions. Navigate to following link:
-
-https://download.postgresql.org/pub/repos/yum/13/redhat/rhel-8-x86_64/
-
-Download the following files:
-
-postgresql13-libs-X.Y-1PGDG.rhel8.x86_64.rpm
-postgresql13-X.Y-1PGDG.rhel8.x86_64.rpm
-postgresql13-server-X.Y-1PGDG.rhel8.x86_64.rpm
-
-Copy these files to /rpms
-
-Make sure that the files referenced in postgres_install.yaml match the files that you have uploaded
-
-# Local SeaweedFS Install
-
-This is optional. This currently only supports install using local binary file. To use this define your database variables in /vars/common.yaml:
-
-s3_use_iam, s3_insecure, s3_endpoint, s3_access_key_id, secret_access_key, s3_bucket, s3_region
-
-Define a host for seaweedfs in your hosts file:
-
-[seaweedfs]
-10.100.10.10 ansible_user=ansible_user private_name=host-seaweedfs
-
-This was created to work with the "linux_amd64.tar.gz" from the following link:
-
-https://github.com/chrislusf/seaweedfs/releases
-
-Copy this file to /rpms on the ansible host
-
-Make sure that the file referenced in seaweedfs_install.yaml matches the file that you have uploaded.
 
 
 

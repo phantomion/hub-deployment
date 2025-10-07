@@ -6,18 +6,8 @@
   ansible.builtin.include_tasks: common.yaml
 - name: User setup
   ansible.builtin.include_tasks: users.yaml
-- name: postgres setup
-  when: "'postgresql' in group_names"
-  ansible.builtin.include_tasks: postgres_install.yaml
-- name: seaweedfs setup
-  when: "'seaweedfs' in group_names"
-  ansible.builtin.include_tasks: seaweedfs_install.yaml
-- name: RPM setup
-  when: rpm_source == "airgapped"
+- name: rpm setup
   ansible.builtin.include_tasks: rpms_airgap.yaml
-- name: RPM setup
-  when: rpm_source != "airgapped"
-  ansible.builtin.include_tasks: rpms_internet.yaml
 - name: Shared Store setup
   when: shared_store_endpoint is defined
   ansible.builtin.include_tasks: sharedstore.yaml

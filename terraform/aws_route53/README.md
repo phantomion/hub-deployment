@@ -1,5 +1,14 @@
-# Terraform files for AWS and Route 53
+# Terraform - AWS + Route 53
 
-To use this directory you will need to be authenticated to aws and an existing 'base' zone registered in Route 53.
+Purpose
+- Create the VMs, networking and Route 53 records required for an SLCHub deployment in AWS. This module expects a pre-existing base DNS zone in Route 53.
 
-Read variables.tf and set as appropriate before terraform init, terraform plan and terraform apply
+Quick flow
+1. Authenticate to AWS with an account that has permissions to create EC2, IAM, S3 and Route 53 resources.
+2. Review and set values in `variables.tf` (or a `*.tfvars` file).
+3. Run: `terraform init`, `terraform plan` and `terraform apply`.
+4. After a successful `terraform apply` copy the generated `hosts` file into the `ansible/` directory and run the Ansible provisioning (`ansible/all.sh`).
+
+Notes
+- Ensure the AWS credentials or role you use have sufficient permissions to create and manage EC2, IAM, S3 and Route53 resources required by this module.
+- Coordinate with your cloud administrators to obtain or create an IAM role or group with permissions needed to create S3 buckets and any IAM users required by the deployment.
