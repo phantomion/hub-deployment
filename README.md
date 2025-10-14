@@ -1,16 +1,21 @@
 # hub-deployment
-Tools and scripts for deploying the SLC Hub on baremetal
+Example repo for provisioning and configuring an SLC Hub environment.
 
-This consists of terraform to make the machines, followed by ansible to configure them.
+Overview
+- Use the Terraform examples to create machines, networking and DNS.
+- Use Ansible to install and configure the hub and workers on those machines.
 
-## Terraform
+Terraform
+- Examples live under `terraform/`. Pick the provider/example you need, set variables, then run `terraform init`, `terraform plan`, `terraform apply`.
 
-See [the terraform subdirectory](terraform) for available terraform examples
+Ansible
+- After Terraform creates machines, copy the generated `hosts` inventory into `ansible/`.
+- Edit `ansible/vars/*` as needed (for example `vars/common.yaml`, `vars/license.yaml`).
+- Run the provisioning from the `ansible/` directory (see `ansible/README.md` for details).
 
-## Ansible
+Permissions note
+- Ensure the cloud account/credentials you use have permissions required to create and manage the resources you plan to use (EC2, S3, IAM, DNS). Coordinate with your cloud administrators to obtain an appropriate IAM role or group.
 
-The ansible can be run against machines provisioned through whatever means you prefer, you don't need to have made them with terraform.
-
-If you make them with provided terraform then terraform will generate a hosts file suitable for ansible to consume.
-
-See [the ansible documentation](ansible/README.md) for more information
+See also
+- `terraform/` - terraform examples
+- `ansible/README.md` - detailed Ansible usage and variables

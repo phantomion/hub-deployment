@@ -1,11 +1,6 @@
 # ingress_url: URL to access the hub. Set this to any reverse proxy, loadbalancer or application gateway in front of the hub. This should be a full URL.
 # shared_store_endpoint: If you set this we will expect to find an NFS server to mount onto all the nodes at this IP address or hostname including path (e.g 1.2.3.4:/ or example.file.core.windows.net:/example/share).
-# db_host: Host name for postgresql server
 # ingress_port: Port that the hub uses for its communication. This should match the port in ingress_url
-# db_name: Database name for database on postgresql server
-# db_user: User name for postgresql server
-# db_password: Password for user on postgresql server
-# db_ssl_mode: SSL mode to use. Can be disable, allow, prefer, require, verify-ca, verify-full
 # s3_use_iam: Whether to use IAM credentials to authenticate to S3.
 # s3_insecure: Whether to connect insecurely. Can be false or true
 # s3_endpoint: Host name for s3 server for the hub
@@ -26,8 +21,6 @@ admin:
   linux_username: slcdev
   linux_home_dir: /home/slcdev
 
-# rpm_source: Options are 'internet' or 'airgapped' for the source of the rpms. For airgapped please download all .rpm files to a rpms subdirectory.
-rpm_source: airgapped
 # rpmsdirectory: Location on the target machines.
 rpmsdirectory: /hubrpms
 # ca_certs: Options are 'internal', 'selfsigned' or 'supplied' for whether to generate internal certificates or sign the CSRs. Internal means the hub generates certificates and is recommended. Selfsigned means ansible with sign the certificates (this is only really for testing the 'supplied' variant). Supplied means you must sign the CSRs and supply the certificates - the job will pause for you to do this.

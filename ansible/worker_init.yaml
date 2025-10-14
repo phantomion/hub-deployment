@@ -10,7 +10,7 @@
 
 - name: Generate SLC auth token (a1 auth)
   ansible.builtin.shell: |-
-    /opt/altair/slc/2024/bin/almutil -a1auth -anyhost -code {{ license.auth_code }} \
+    /opt/altair/slc/2025/bin/almutil -a1auth -anyhost -code {{ license.auth_code }} \
     | tail -n 1 | cut -d':' -f 2 | sed -e 's/^\s*//'
   register: new_auth_result
   failed_when: "'ERROR' in new_auth_result.stderr"
@@ -23,7 +23,7 @@
 - name: Check for existing SLC install (For AltairOne Units)
   ansible.builtin.shell: |-
     hubctl slcinstall list | awk '{print $1}' | tail -n +3 \
-    | grep /opt/altair/slc/2024
+    | grep /opt/altair/slc/2025
   ignore_errors: yes
   register: a1_slc_install
   environment:
@@ -34,7 +34,7 @@
 
 - name: Copy SLC install information (For AltairOne Units)
   ansible.builtin.command:
-    cmd: "hubctl slcinstall add /opt/altair/slc/2024"
+    cmd: "hubctl slcinstall add /opt/altair/slc/2025"
   environment:
     ALM_HHWU: "TRUE"
     ALM_HHWU_TOKEN: "{{ auth_token }}"
@@ -44,7 +44,7 @@
 - name: Check for existing SLC install (For ALM)
   ansible.builtin.shell: |-
     hubctl slcinstall list | awk '{print $1}' | tail -n +3 \
-    | grep /opt/altair/slc/2024
+    | grep /opt/altair/slc/2025
   register: alm_slc_install
   environment:
     ALM_HHWU: "FALSE"
@@ -54,7 +54,7 @@
 
 - name: Copy SLC install information (For ALM)
   ansible.builtin.command:
-    cmd: "hubctl slcinstall add /opt/altair/slc/2024"
+    cmd: "hubctl slcinstall add /opt/altair/slc/2025"
   environment:
     ALM_HHWU: "FALSE"
     ALTAIR_LICENSE_PATH: "{{ license.license_path }}"
@@ -86,9 +86,18 @@
   ansible.builtin.file:
     src: /opt/altair/slchub/bin/hubctl
     dest: /usr/local/bin/hubctl
-    owner: root
-    group: root
+    owner: slchub
+    group: slchub
     state: link
+
+- name: Ensure hubctl is executable
+  ansible.builtin.file:
+    path: /opt/altair/slchub/bin/hubctl
+    mode: '0755'
+    owner: slchub
+    group: slchub
+    state: file
+  become: true
 
 - name: Generate CSRs
   ansible.builtin.command: /usr/local/bin/hubctl generate csr

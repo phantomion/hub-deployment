@@ -1,13 +1,4 @@
-- name: Check if demo deployment already exists
-  ansible.builtin.uri:
-    url: http://localhost:9090/api/v2/ondemand/deployments
-    user: "{{admin.username}}"
-    password: "{{admin.password}}"
-    force_basic_auth: true
-    body_format: json
-    return_content: true
-  register: artifact_res
-
-- name: Run demo deployment
+- name: Ensure demo deployment exists
   ansible.builtin.command: /usr/local/bin/hubctl demo deployment
-  when: artifact_res.json | json_query("data[?path=='slchub-example-programs']") | length == 0
+  register: demo_run
+  changed_when: false

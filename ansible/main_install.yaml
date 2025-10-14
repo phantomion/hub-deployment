@@ -5,13 +5,13 @@
     - vars/common.yaml
     - vars/license.yaml
   vars:
-    slc_rpm: "altairslc2024"
+    slc_rpm: "altairslc2025"
     worker_rpm: "slchub-worker"
     hub_rpm: "slchub"
     airgapped: # Optional:
-      slc_rpm_file: altairslc-5.24.0.3.564_ea3_release-1.x86_64.rpm
-      worker_rpm_file: slchub-worker-2023.5.0~alpha1^106-1_x86_64.rpm
-      hub_rpm_file: slchub-2023.5.0~alpha1^106-1_x86_64.rpm
+      slc_rpm_file: altairslc-5.25.2.0.1636_ga_maintenance-1.x86_64.rpm
+      worker_rpm_file: slchub_worker_2025.2.0_alpha808_808_1_x86_64.rpm
+      hub_rpm_file: slchub_2025.2.0_alpha808_808_1_x86_64.rpm
     bootstrap_params: "{{ '--nointernaltls' if ca_certs != 'internal' else ''}}"
   tasks:
   - name: Install tasks

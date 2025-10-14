@@ -537,3 +537,5 @@ terraform/*/hosts
 ansible/hosts
 ansible/license/
 ansible/rpms/
+.vscode/settings.json
+ansible/hubrpms/
