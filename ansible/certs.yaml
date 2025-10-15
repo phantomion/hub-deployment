@@ -2,7 +2,7 @@
   ansible.builtin.command: /usr/local/bin/hubctl generate csr
 - name: Pull CSRs and keys
   ansible.builtin.fetch:
-    src: "/opt/altair/slchub/var/ca/public/{{ item }}"
+    src: "{{ slchub_dir }}/var/ca/public/{{ item }}"
     dest: "csrs/{{ private_name}}/{{ item }}"
     flat: true
   loop:
@@ -33,38 +33,38 @@
   run_once: true
 - name: Push Certs
   ansible.builtin.copy:
-    dest: "/opt/altair/slchub/var/ca/public/{{ item }}"
+    dest: "{{ slchub_dir }}/var/ca/public/{{ item }}"
     src: "csrs/{{ private_name }}/{{ item }}"
     mode: 0644
-    owner: slchub-casvc
-    group: slchub
+    owner: "{{ slchub_casvc_user }}"
+    group: "{{ slchub_group }}"
   loop:
     - wps/Server.cert.pem
     - nomad/ServerClient.cert.pem
   when: ca_certs == "supplied" or ca_certs == "selfsigned"
 - name: Push CA
   ansible.builtin.copy:
-    dest: /opt/altair/slchub/var/ca/public/CA.cert.pem
+    dest: "{{ slchub_dir }}/var/ca/public/CA.cert.pem"
     src: ./ca.pem
     mode: 0644
-    owner: slchub-casvc
-    group: slchub
+    owner: "{{ slchub_casvc_user }}"
+    group: "{{ slchub_group }}"
   when: ca_certs == "supplied" or ca_certs == "selfsigned"
 - name: Copy internal ingress custom for private CA
   ansible.builtin.copy:
     src: "templates/internalingress_privateca.yaml"
-    dest: "/opt/altair/slchub/etc/config.d/internalingress_custom.yaml"
+    dest: "{{ slchub_dir }}/etc/config.d/internalingress_custom.yaml"
   when: ca_certs == "selfsigned"
 - name: Copy internal ingress custom for public CA
   ansible.builtin.copy:
     src: "templates/internalingress_publicca.yaml"
-    dest: "/opt/altair/slchub/etc/config.d/internalingress_custom.yaml"
+    dest: "{{ slchub_dir }}/etc/config.d/internalingress_custom.yaml"
   when: ca_certs == "supplied"
 - name: Copy CA
   when: "'workers' in group_names"
   ansible.builtin.copy:
     remote_src: yes
-    src: /opt/altair/slchub/var/ca/public/CA.cert.pem
+    src: "{{ slchub_dir }}/var/ca/public/CA.cert.pem"
     dest: /etc/pki/ca-trust/source/anchors
 - name: Update ca-trust
   when: "'workers' in group_names"

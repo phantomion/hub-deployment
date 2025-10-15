@@ -23,6 +23,20 @@ admin:
 
 # rpmsdirectory: Location on the target machines.
 rpmsdirectory: /hubrpms
+
+slc_rpm: "altairslc2025"
+worker_rpm: "slchub-worker"
+hub_rpm: "slchub"
+ 
+airgapped:
+  slc_rpm_file: altairslc-5.25.2.0.1636_ga_maintenance-1.x86_64.rpm
+  worker_rpm_file: slchub_worker_2025.2.0_alpha808_808_1_x86_64.rpm
+  hub_rpm_file: slchub_2025.2.0_alpha808_808_1_x86_64.rpm
+ 
+slchub_dir: /opt/altair/slchub
+slchub_user: slchub
+slchub_group: slchub
+slchub_casvc_user: slchub-casvc
 # ca_certs: Options are 'internal', 'selfsigned' or 'supplied' for whether to generate internal certificates or sign the CSRs. Internal means the hub generates certificates and is recommended. Selfsigned means ansible with sign the certificates (this is only really for testing the 'supplied' variant). Supplied means you must sign the CSRs and supply the certificates - the job will pause for you to do this.
 ca_certs: internal
 # ldap_enabled: Get ansible to configure ldap for you. See ldap.yaml to configure it.
