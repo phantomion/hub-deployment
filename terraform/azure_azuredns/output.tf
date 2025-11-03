@@ -11,8 +11,7 @@ resource "local_file" "ansible_hosts" {
 	hub_ip = azurerm_public_ip.hub-public-ip.ip_address
 	hub_private_name = azurerm_dns_a_record.hub.name
   hub_private_ip = azurerm_network_interface.hub-nic.private_ip_address
-	# ingress_url = "https://${acme_certificate.hub.common_name}"
-	ingress_url = "http://hub.${var.prefix}.${var.dns_zone}"
+	ingress_url = "https://${acme_certificate.hub.common_name}"
 	shared_store_endpoint = "${azurerm_storage_share.shared-store.storage_account_name}.file.core.windows.net:/${azurerm_storage_share.shared-store.storage_account_name}/${azurerm_storage_share.shared-store.name}"
 	workers = [
 	  for i,v in azurerm_linux_virtual_machine.worker:

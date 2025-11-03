@@ -17,19 +17,6 @@ resource "azurerm_network_security_group" "hublb" {
     destination_address_prefix   = "*"
   }
 
-  /* security_rule {
-    name                                       = "BlockRemoteAccess"
-    description                                = ""
-    priority                                   = 300
-    direction                                  = "Inbound"
-    access                                     = "Deny"
-    protocol                                   = "Tcp"
-    source_port_range                          = "*"
-    destination_port_ranges                    = ["22","3389"]
-    destination_address_prefix                 = "*"
-    source_address_prefix                      = "*"
-  } */
-
   security_rule {
     name                         = "outbound"
     description                  = "Allow all outbound"
@@ -83,8 +70,7 @@ resource "azurerm_application_gateway" "hublb" {
 
   frontend_port {
     name = "${var.prefix}-hublb-fe-port"
-    # port = 443
-    port = 80
+    port = 443
   }
 
   frontend_ip_configuration {
@@ -106,19 +92,18 @@ resource "azurerm_application_gateway" "hublb" {
     request_timeout       = 60
   }
 
-  /* ssl_certificate {
+  ssl_certificate {
     name     = "${var.prefix}-hublb-ssl-cert"
     data     = acme_certificate.hub.certificate_p12
     password = "${var.acme_cert_password}"
-  } */
+  }
 
   http_listener {
     name                           = "${var.prefix}-hublb-listener"
     frontend_ip_configuration_name = "${var.prefix}-hublb-fe-ip-conf"
     frontend_port_name             = "${var.prefix}-hublb-fe-port"
-    # ssl_certificate_name           = "${var.prefix}-hublb-ssl-cert"
-    # protocol                       = "Https"
-    protocol                       = "Http"
+    ssl_certificate_name           = "${var.prefix}-hublb-ssl-cert"
+    protocol                       = "Https"
   }
 
   request_routing_rule {

@@ -70,19 +70,18 @@ resource "azurerm_network_security_group" "hub" {
     destination_address_prefix   = "*"
   }
 
-  /* security_rule {
-    name                                       = "BlockRemoteAccess"
-    description                                = "Block SSH access"
-    priority                                   = 205
-    direction                                  = "Inbound"
-    access                                     = "Deny"
-    protocol                                   = "Tcp"
-    source_port_range                          = "*"
-    # destination_port_ranges                    = ["22","3389"]
-    destination_port_range                    = "22"
-    destination_address_prefix                 = "*"
-    source_address_prefix                      = "Internet"
-  } */
+  security_rule {
+    name                         = "https"
+    description                  = "Ingress HTTPS"
+    priority                     = 250
+    direction                    = "Inbound"
+    access                       = "Allow"
+    protocol                     = "Tcp"
+    source_port_range            = "*"
+    destination_port_range       = "443"
+    source_address_prefix        = "*"
+    destination_address_prefix   = "*"
+  }
 
   # outbound internet access
   security_rule {
@@ -163,5 +162,20 @@ resource "azurerm_linux_virtual_machine" "hub" {
     username   = var.ssh_user_name
     public_key = azurerm_ssh_public_key.common-auth.public_key
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
+data "azurerm_subscription" "current" {}
+
+data "azurerm_role_definition" "dns_zone_contributor" {
+  name = "DNS Zone Contributor"
+}
+
+resource "azurerm_role_assignment" "hub_dns" {
+  scope                = azurerm_dns_zone.zone.id
+  role_definition_id = data.azurerm_role_definition.dns_zone_contributor.id
+  principal_id       = azurerm_linux_virtual_machine.hub.identity[0].principal_id
+}

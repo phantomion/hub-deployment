@@ -44,20 +44,6 @@ resource "azurerm_network_security_group" "worker" {
     destination_address_prefix   = "*"
   }
 
-  /* security_rule {
-    name                                       = "BlockRemoteAccess"
-    description                                = ""
-    priority                                   = 300
-    direction                                  = "Inbound"
-    access                                     = "Deny"
-    protocol                                   = "Tcp"
-    source_port_range                          = "*"
-    destination_port_ranges                    = ["22","3389"]
-    destination_address_prefix                 = "*"
-    source_address_prefix                      = "*"
-  } */
-
-
   # outbound internet access
   security_rule {
     name                         = "outbound"
