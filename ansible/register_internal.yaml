@@ -1,5 +1,5 @@
 - name: Generate worker token
-  ansible.builtin.command: bash -c "/usr/bin/hubctl worker add | grep hubctl"
+  ansible.builtin.command: bash -c "/usr/local/bin/hubctl worker add | grep hubctl"
   when: "'hub' in group_names"
   register: "workerreg"
   loop: "{{ groups['workers'] }}"

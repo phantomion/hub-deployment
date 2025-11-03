@@ -1,5 +1,5 @@
 - name: Generate CSRs
-  ansible.builtin.command: /usr/bin/hubctl generate csr
+  ansible.builtin.command: /usr/local/bin/hubctl generate csr
 - name: Pull CSRs and keys
   ansible.builtin.fetch:
     src: "{{ slchub_dir }}/var/ca/public/{{ item }}"

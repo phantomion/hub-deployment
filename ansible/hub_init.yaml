@@ -112,7 +112,7 @@
   when: private_name is defined
 
 - name: Run dbmigrate
-  ansible.builtin.command: /usr/bin/hubctl dbmigrate
+  ansible.builtin.command: /usr/local/bin/hubctl dbmigrate
 
 - name: Run bootstrap
-  ansible.builtin.command: "/usr/bin/hubctl bootstrap {{ bootstrap_params }}"
+  ansible.builtin.command: "/usr/local/bin/hubctl bootstrap {{ bootstrap_params }}"

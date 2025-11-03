@@ -1,4 +1,4 @@
 - name: Enable worker
-  ansible.builtin.command: /usr/bin/hubctl service enable
+  ansible.builtin.command: /usr/local/bin/hubctl service enable
 - name: Start worker
-  ansible.builtin.command: /usr/bin/hubctl service start
+  ansible.builtin.command: /usr/local/bin/hubctl service start

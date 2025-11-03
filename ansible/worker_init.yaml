@@ -100,7 +100,7 @@
   become: true
 
 - name: Generate CSRs
-  ansible.builtin.command: /usr/bin/hubctl generate csr
+  ansible.builtin.command: /usr/local/bin/hubctl generate csr
   when: ca_certs == "supplied" or ca_certs == "selfsigned"
 
 - name: Add hub IP and private_name to /etc/hosts
