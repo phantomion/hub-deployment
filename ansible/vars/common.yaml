@@ -51,7 +51,7 @@ ansible_python_interpreter: /usr/libexec/platform-python
 optional:
   python:
     install: false
-    version: "3.14"
+    version: "3.8"
     packages:
       - numpy
       - pandas
