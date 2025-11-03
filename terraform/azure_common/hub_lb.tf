@@ -12,14 +12,12 @@ resource "azurerm_network_security_group" "hublb" {
     access                       = "Allow"
     protocol                     = "Tcp"
     source_port_range            = "*"
-    destination_port_range       = "433"
+    destination_port_range       = "443"
     source_address_prefix        = "*"
-    source_address_prefixes      = []
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 
-  security_rule {
+  /* security_rule {
     name                                       = "BlockRemoteAccess"
     description                                = ""
     priority                                   = 300
@@ -27,16 +25,10 @@ resource "azurerm_network_security_group" "hublb" {
     access                                     = "Deny"
     protocol                                   = "Tcp"
     source_port_range                          = "*"
-    destination_port_ranges                    = [
-        "22",
-        "3389",
-    ]
+    destination_port_ranges                    = ["22","3389"]
     destination_address_prefix                 = "*"
-    destination_address_prefixes               = []
-    source_address_prefix                      = "Internet"
-    source_address_prefixes                    = []
-    source_application_security_group_ids      = []
-  }
+    source_address_prefix                      = "*"
+  } */
 
   security_rule {
     name                         = "outbound"
@@ -48,9 +40,7 @@ resource "azurerm_network_security_group" "hublb" {
     source_port_range            = "*"
     destination_port_range       = "*"
     source_address_prefix        = "*"
-    source_address_prefixes      = []
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 }
 
@@ -68,6 +58,11 @@ resource "azurerm_application_gateway" "hublb" {
   location            = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   tags                = var.tags
+
+  ssl_policy {
+    policy_type = "Predefined"
+    policy_name = "AppGwSslPolicy20220101"
+  }
 
   sku {
     name = "Standard_v2"
@@ -88,7 +83,8 @@ resource "azurerm_application_gateway" "hublb" {
 
   frontend_port {
     name = "${var.prefix}-hublb-fe-port"
-    port = 443
+    # port = 443
+    port = 80
   }
 
   frontend_ip_configuration {
@@ -110,18 +106,19 @@ resource "azurerm_application_gateway" "hublb" {
     request_timeout       = 60
   }
 
-  ssl_certificate {
+  /* ssl_certificate {
     name     = "${var.prefix}-hublb-ssl-cert"
     data     = acme_certificate.hub.certificate_p12
     password = "${var.acme_cert_password}"
-  }
+  } */
 
   http_listener {
     name                           = "${var.prefix}-hublb-listener"
     frontend_ip_configuration_name = "${var.prefix}-hublb-fe-ip-conf"
     frontend_port_name             = "${var.prefix}-hublb-fe-port"
-    ssl_certificate_name           = "${var.prefix}-hublb-ssl-cert"
-    protocol                       = "Https"
+    # ssl_certificate_name           = "${var.prefix}-hublb-ssl-cert"
+    # protocol                       = "Https"
+    protocol                       = "Http"
   }
 
   request_routing_rule {

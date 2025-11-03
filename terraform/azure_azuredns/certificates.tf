@@ -12,7 +12,7 @@ resource "acme_registration" "reg" {
 }
 
 # Gets a certificate from the ACME server
-resource "acme_certificate" "hub" {
+/* resource "acme_certificate" "hub" {
   common_name              = "hub.${var.prefix}.${var.dns_zone}"
 
   account_key_pem          = acme_registration.reg.account_key_pem
@@ -26,7 +26,7 @@ resource "acme_certificate" "hub" {
       AZURE_TTL            = 300
     }
   }
-}
+} */
 
 resource "azurerm_dns_zone" "zone" {
   name                = var.dns_zone

@@ -104,16 +104,16 @@ resource "azurerm_linux_virtual_machine" "ldap" {
   }
 
   source_image_reference {
-    publisher = "almalinux"
-    offer     = "almalinux"
-    sku       = "8-gen2"
+    publisher = "resf"
+    offer     = "rockylinux-x86_64"
+    sku       = "8-lvm"
     version   = "latest"
   }
 
   plan {
-    name = "8-gen2"
-    product = "almalinux"
-    publisher = "almalinux"
+    name = "8-lvm"
+    product = "rockylinux-x86_64"
+    publisher = "resf"
   }
 
   computer_name  = "${var.prefix}-ldap"

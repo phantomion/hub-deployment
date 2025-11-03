@@ -1,14 +1,14 @@
 resource "azurerm_storage_account" "shared-store" {
-  name                      = "${replace(var.prefix, "/[^a-zA-Z0-9]/", "")}shared"
-  location                  = azurerm_resource_group.rg.location
-  resource_group_name       = azurerm_resource_group.rg.name
-  account_tier              = "Premium"
-  account_replication_type  = "LRS"
-  account_kind              = "FileStorage"
+  name                       = "${replace(var.prefix, "/[^a-zA-Z0-9]/", "")}shared"
+  location                   = azurerm_resource_group.rg.location
+  resource_group_name        = azurerm_resource_group.rg.name
+  account_tier               = "Premium"
+  account_replication_type   = "LRS"
+  account_kind               = "FileStorage"
   # is_hns_enabled            = true
   # nfsv3_enabled             = true
-  enable_https_traffic_only = false
-  tags                      = var.tags
+  https_traffic_only_enabled = false
+  tags                       = var.tags
 
   share_properties {
     retention_policy {

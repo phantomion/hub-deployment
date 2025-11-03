@@ -26,12 +26,12 @@ variable "worker_vm_count" {
 
 variable "hubvmsize" {
   description = "Hub VM type"
-  default = "Standard_DC4s_v2"
+  default = "Standard_DC4s_v3"
 }
 
 variable "workervmsize" {
   description = "Workbench VM type"
-  default = "Standard_DC2s_v2"
+  default = "Standard_DC2s_v3"
 }
 
 variable "dbsku" {

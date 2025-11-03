@@ -14,10 +14,8 @@ resource "azurerm_network_security_group" "hub" {
     protocol                     = "Tcp"
     source_port_range            = "*"
     destination_port_range       = "22"
-    source_address_prefix        = ""
     source_address_prefixes      = split(",", var.setup_from_address_range)
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 
   security_rule {
@@ -29,10 +27,8 @@ resource "azurerm_network_security_group" "hub" {
     protocol                     = "Tcp"
     source_port_range            = "*"
     destination_port_range       = "4647"
-    source_address_prefix        = ""
     source_address_prefixes      = azurerm_virtual_network.vn.address_space
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 
   security_rule {
@@ -44,10 +40,8 @@ resource "azurerm_network_security_group" "hub" {
     protocol                     = "Tcp"
     source_port_range            = "*"
     destination_port_range       = "9090"
-    source_address_prefix        = ""
     source_address_prefixes      = azurerm_virtual_network.vn.address_space
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 
   security_rule {
@@ -59,10 +53,8 @@ resource "azurerm_network_security_group" "hub" {
     protocol                     = "Tcp"
     source_port_range            = "*"
     destination_port_range       = "9091"
-    source_address_prefix        = ""
     source_address_prefixes      = azurerm_virtual_network.vn.address_space
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 
   security_rule {
@@ -74,30 +66,23 @@ resource "azurerm_network_security_group" "hub" {
     protocol                     = "Tcp"
     source_port_range            = "*"
     destination_port_range       = "9093"
-    source_address_prefix        = ""
     source_address_prefixes      = azurerm_virtual_network.vn.address_space
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 
-  security_rule {
+  /* security_rule {
     name                                       = "BlockRemoteAccess"
-    description                                = ""
-    priority                                   = 300
+    description                                = "Block SSH access"
+    priority                                   = 205
     direction                                  = "Inbound"
     access                                     = "Deny"
     protocol                                   = "Tcp"
     source_port_range                          = "*"
-    destination_port_ranges                    = [
-        "22",
-        "3389",
-    ]
+    # destination_port_ranges                    = ["22","3389"]
+    destination_port_range                    = "22"
     destination_address_prefix                 = "*"
-    destination_address_prefixes               = []
     source_address_prefix                      = "Internet"
-    source_address_prefixes                    = []
-    source_application_security_group_ids      = []
-  }
+  } */
 
   # outbound internet access
   security_rule {
@@ -110,9 +95,7 @@ resource "azurerm_network_security_group" "hub" {
     source_port_range            = "*"
     destination_port_range       = "*"
     source_address_prefix        = "*"
-    source_address_prefixes      = []
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 }
 
@@ -161,16 +144,16 @@ resource "azurerm_linux_virtual_machine" "hub" {
   }
 
   source_image_reference {
-    publisher = "almalinux"
-    offer     = "almalinux"
-    sku       = "8-gen2"
+    publisher = "resf"
+    offer     = "rockylinux-x86_64"
+    sku       = "8-lvm"
     version   = "latest"
   }
 
   plan {
-    name = "8-gen2"
-    product = "almalinux"
-    publisher = "almalinux"
+    name = "8-lvm"
+    product = "rockylinux-x86_64"
+    publisher = "resf"
   }
 
   computer_name  = "${var.prefix}-hub"

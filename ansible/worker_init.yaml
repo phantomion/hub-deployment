@@ -100,5 +100,14 @@
   become: true
 
 - name: Generate CSRs
-  ansible.builtin.command: /usr/local/bin/hubctl generate csr
+  ansible.builtin.command: /usr/bin/hubctl generate csr
   when: ca_certs == "supplied" or ca_certs == "selfsigned"
+
+- name: Add hub IP and private_name to /etc/hosts
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ hostvars[groups['hub'][0]].private_ip }} {{ hostvars[groups['hub'][0]].private_name }}"
+    state: present
+    create: yes
+  when: groups['hub'] | length > 0 and hostvars[groups['hub'][0]].private_name is defined

@@ -1,5 +1,0 @@
-- name: Install the rpms
-  yum:
-    name: ["{{ hub_rpm }}", 'yum-utils', 'dos2unix', ]
-    state: latest
-    update_cache: true

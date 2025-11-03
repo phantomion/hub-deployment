@@ -1,5 +1,5 @@
 - name: Installing common platform rpm files
-  yum:
-    name: ['nfs-utils', 'git', 'epel-release', 'sssd', 'authconfig', 'compat-openssl10']
+  ansible.builtin.yum:
+    name: ['nfs-utils', 'git', 'epel-release', 'sssd', 'authconfig', 'compat-openssl10', 'yum-utils', 'dos2unix']
     state: latest
     update_cache: true

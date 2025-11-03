@@ -1,8 +1,0 @@
-- name: Installing the worker rpm files
-  ansible.builtin.yum:
-    disable_gpg_check: yes
-    name:
-      - "{{ rpmsdirectory }}/{{ airgapped.worker_rpm_file }}"
-      - "{{ rpmsdirectory }}/{{ airgapped.slc_rpm_file }}"
-    state: present
-    update_cache: true
