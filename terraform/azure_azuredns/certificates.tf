@@ -16,10 +16,10 @@ resource "acme_certificate" "hub" {
   common_name              = "hub.${var.prefix}.${var.dns_zone}"
 
   account_key_pem          = acme_registration.reg.account_key_pem
-  certificate_p12_password = "${var.acme_cert_password}"
+  certificate_p12_password = var.acme_cert_password
 
   dns_challenge {
-    provider = "azure"
+    provider = "azuredns"
     config = {
       AZURE_RESOURCE_GROUP = azurerm_resource_group.rg.name
       AZURE_ZONE_NAME      = var.dns_zone

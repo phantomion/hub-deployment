@@ -23,6 +23,7 @@ resource "azurerm_postgresql_flexible_server" "hubdb" {
   administrator_password = "${var.dbpassword}"
   zone                   = "2"
   tags                   = var.tags
+  public_network_access_enabled = false
 
   storage_mb = 32768
 

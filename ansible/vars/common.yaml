@@ -27,12 +27,11 @@ rpmsdirectory: /hubrpms
 slc_rpm: "altairslc2025"
 worker_rpm: "slchub-worker"
 hub_rpm: "slchub"
- 
-airgapped:
-  slc_rpm_file: altairslc-5.25.2.0.1636_ga_maintenance-1.x86_64.rpm
-  worker_rpm_file: slchub_worker_2025.2.0_alpha808_808_1_x86_64.rpm
-  hub_rpm_file: slchub_2025.2.0_alpha808_808_1_x86_64.rpm
- 
+
+slc_rpm_file: altairslc-5.25.2.0.1636_ga_maintenance-1.x86_64.rpm
+worker_rpm_file: slchub_worker_2025.2.0_alpha808_808_1_x86_64.rpm
+hub_rpm_file: slchub_2025.2.0_alpha808_808_1_x86_64.rpm
+
 slchub_dir: /opt/altair/slchub
 slchub_user: slchub
 slchub_group: slchub

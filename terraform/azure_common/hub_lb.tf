@@ -12,30 +12,9 @@ resource "azurerm_network_security_group" "hublb" {
     access                       = "Allow"
     protocol                     = "Tcp"
     source_port_range            = "*"
-    destination_port_range       = "433"
+    destination_port_range       = "443"
     source_address_prefix        = "*"
-    source_address_prefixes      = []
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
-  }
-
-  security_rule {
-    name                                       = "BlockRemoteAccess"
-    description                                = ""
-    priority                                   = 300
-    direction                                  = "Inbound"
-    access                                     = "Deny"
-    protocol                                   = "Tcp"
-    source_port_range                          = "*"
-    destination_port_ranges                    = [
-        "22",
-        "3389",
-    ]
-    destination_address_prefix                 = "*"
-    destination_address_prefixes               = []
-    source_address_prefix                      = "Internet"
-    source_address_prefixes                    = []
-    source_application_security_group_ids      = []
   }
 
   security_rule {
@@ -48,9 +27,7 @@ resource "azurerm_network_security_group" "hublb" {
     source_port_range            = "*"
     destination_port_range       = "*"
     source_address_prefix        = "*"
-    source_address_prefixes      = []
     destination_address_prefix   = "*"
-    destination_address_prefixes = []
   }
 }
 
@@ -68,6 +45,11 @@ resource "azurerm_application_gateway" "hublb" {
   location            = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   tags                = var.tags
+
+  ssl_policy {
+    policy_type = "Predefined"
+    policy_name = "AppGwSslPolicy20220101"
+  }
 
   sku {
     name = "Standard_v2"

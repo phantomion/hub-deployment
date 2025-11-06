@@ -70,10 +70,3 @@ vars/ldap.yaml should be setup if you'd like ldap integration.
 
 vars/license.yaml you must set the license type either a1 (for altair units) or
 alm (for license manager). See vars/license.yaml for more details.
-
-
-
-
-
-
-

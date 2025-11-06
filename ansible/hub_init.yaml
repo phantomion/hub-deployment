@@ -102,5 +102,17 @@
     state: file
   become: true
 
+- name: Add private_name to /etc/hosts
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1 {{ private_name }}"
+    state: present
+    create: yes
+  when: private_name is defined
+
+- name: Run dbmigrate
+  ansible.builtin.command: /usr/local/bin/hubctl dbmigrate
+
 - name: Run bootstrap
   ansible.builtin.command: "/usr/local/bin/hubctl bootstrap {{ bootstrap_params }}"

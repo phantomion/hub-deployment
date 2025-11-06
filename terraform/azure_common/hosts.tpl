@@ -15,7 +15,7 @@ azure_storage_region = ${azure_storage_region}
 azure_storage_insecure = false
 
 [hub]
-${hub_ip} ansible_user=${username} private_name=${hub_private_name}
+${hub_ip} ansible_user=${username} private_name=${hub_private_name} private_ip=${hub_private_ip}
 
 [workers]
 %{ for worker in workers ~}

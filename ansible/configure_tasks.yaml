@@ -19,7 +19,6 @@
 - name: Worker run
   ansible.builtin.include_tasks: worker_run.yaml
   when: "'workers' in group_names"
-
 - name: Register workers with internal TLS
   ansible.builtin.include_tasks: register_internal.yaml
   when: "ca_certs == 'internal'"

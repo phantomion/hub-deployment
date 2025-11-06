@@ -6,8 +6,8 @@
   ansible.builtin.include_tasks: common.yaml
 - name: User setup
   ansible.builtin.include_tasks: users.yaml
-- name: rpm setup
-  ansible.builtin.include_tasks: rpms_airgap.yaml
+- name: RPM setup
+  ansible.builtin.include_tasks: rpms.yaml
 - name: Shared Store setup
   when: shared_store_endpoint is defined
   ansible.builtin.include_tasks: sharedstore.yaml
@@ -15,9 +15,3 @@
   when: "ca_certs == 'selfsigned'"
   ansible.builtin.include_tasks: createca.yaml
   run_once: true
-- name: Hub install
-  ansible.builtin.include_tasks: hub_install.yaml
-  when: "'hub' in group_names"
-- name: Worker install
-  ansible.builtin.include_tasks: worker_install.yaml
-  when: "'workers' in group_names"

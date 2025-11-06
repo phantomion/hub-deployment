@@ -1,0 +1,46 @@
+- name: Make rpms dir
+  file:
+    path: "{{ rpmsdirectory }}"
+    state: directory
+
+- name: Copy rpms (server)
+  ansible.builtin.copy:
+    src: "{{ (rpms_source_dir | default('hubrpms')) }}/{{ hub_rpm_file }}"
+    dest: "{{ rpmsdirectory }}/{{ hub_rpm_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - "{{ hub_rpm_file }}"
+  when: "'hub' in group_names"
+
+- name: Copy rpms (workers)
+  ansible.builtin.copy:
+    src: "{{ (rpms_source_dir | default('hubrpms')) }}/{{ item }}"
+    dest: "{{ rpmsdirectory }}/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - "{{ slc_rpm_file }}"
+    - "{{ worker_rpm_file }}"
+  when: "'workers' in group_names"
+
+- name: Install RPM from disk (server)
+  ansible.builtin.yum:
+    name: "{{ rpmsdirectory }}/{{ hub_rpm_file }}"
+    state: latest
+    update_cache: true
+    disable_gpg_check: yes
+  when: "'hub' in group_names"
+
+- name: Install RPMs from disk (workers)
+  ansible.builtin.yum:
+    name: "{{ rpmsdirectory }}/{{ item }}"
+    state: latest
+    update_cache: true
+    disable_gpg_check: yes
+  with_items:
+    - "{{ slc_rpm_file }}"
+    - "{{ worker_rpm_file }}"
+  when: "'workers' in group_names"
